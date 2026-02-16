@@ -1847,12 +1847,7 @@ const SPOTIFY_LOGO_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1
 function openTrackWithEmbed(trackId, externalUrl) {
     if (!trackId) return;
     
-    // 1. Open full Spotify page in new tab
-    if (externalUrl) {
-        window.open(externalUrl, '_blank', 'noopener');
-    }
-    
-    // 2. Load into local iframe (User must click play inside iframe)
+    // 1. Load into local iframe (User must click play inside iframe)
     const container = document.getElementById('spotify-now-playing');
     const iframe = document.getElementById('spotify-embed-player');
     if (container && iframe) {
