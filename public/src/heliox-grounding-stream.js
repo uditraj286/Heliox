@@ -1843,6 +1843,24 @@ const spotifyState = {
 // Use a public, always-available Spotify glyph for stability
 const SPOTIFY_LOGO_URL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/3840px-Spotify_logo_without_text.svg.png';
 
+// Global Spotify Click logic
+function openTrackWithEmbed(trackId, externalUrl) {
+    if (!trackId) return;
+    
+    // 1. Open full Spotify page in new tab
+    if (externalUrl) {
+        window.open(externalUrl, '_blank', 'noopener');
+    }
+    
+    // 2. Load into local iframe (User must click play inside iframe)
+    const container = document.getElementById('spotify-now-playing');
+    const iframe = document.getElementById('spotify-embed-player');
+    if (container && iframe) {
+        container.classList.remove('hidden');
+        iframe.src = `https://open.spotify.com/embed/track/${trackId}?utm_source=heliox_chat`;
+    }
+}
+
 function loadSpotifyPlaylists() {
     try {
         const raw = localStorage.getItem('heliox_spotify_playlists');
@@ -2380,34 +2398,26 @@ window.playSpotifyTrack = function(index) {
     if (!track) return;
     spotifyState.currentIndex = index;
 
-    // Prefer full-track playback via Web Playback SDK when connected
-    if (spotifyState.userToken && spotifyState.deviceId && track.uri) {
-        fetch('https://api.spotify.com/v1/me/player/play?device_id=' + encodeURIComponent(spotifyState.deviceId), {
-            method: 'PUT',
-            headers: {
-                'Authorization': 'Bearer ' + spotifyState.userToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ uris: [track.uri] })
-        }).catch(err => console.error('Spotify play error', err));
-    } else if (track.preview_url) {
-        // Fallback to 30s preview inside chatbot if no full playback session
-    spotifyState.audio.src = track.preview_url;
-    spotifyState.audio.play();
-    } else {
-        // Final fallback: open full track in Spotify app/site
-        const url = track.external_urls?.spotify;
-        if (url) window.open(url, '_blank', 'noopener');
-        else showSpotifyError('This track has no preview available from Spotify.');
-    }
+    // Custom behavior: Open new page + Load in Iframe
+    const externalUrl = track.external_urls?.spotify;
+    openTrackWithEmbed(track.id, externalUrl);
 
-    // Make sure the dock/player panel is visible whenever a track starts or we control playback
+    // Make sure the dock/player panel is visible
     const helperPanel = document.getElementById('spotify-player');
     if (helperPanel) helperPanel.classList.remove('hidden');
+    
     document.querySelectorAll('.spotify-inline-track').forEach(el => el.classList.remove('playing'));
-    document.querySelector('.spotify-inline-track[data-idx="' + index + '"]')?.classList.add('playing');
+    const trackEl = document.querySelector('.spotify-inline-track[data-idx="' + index + '"]');
+    if (trackEl) trackEl.classList.add('playing');
+    
+    // Stop local preview audio to avoid audio overlap
+    if (spotifyState.audio) {
+        spotifyState.audio.pause();
+        spotifyState.audio.src = '';
+    }
+    
     updateMiniPlayer();
-    updateSpotifyDock();
+    // No updateSpotifyDock call here as openTrackWithEmbed handles it
 };
 
 window.spotifyTogglePlay = function() {
