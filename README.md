@@ -1,150 +1,80 @@
-# Heliox - AI Assistant with Grounded Search
+# 🌌 Heliox - AI Assistant with Grounded Search
 
 **Designed & Developed by [Devreon Devs](https://devreondevs.com)**
 
-A production-ready AI chatbot delivering verified, source-backed answers using Google Grounding technology.
+Heliox is a production-grade AI chatbot that delivers verified, source-backed answers using Google Grounding technology. It is built for researchers, developers, and power users who need accuracy and real-time intelligence.
 
-## Features
+---
 
-- **Grounded Search**: Every answer is verified with live Google search
-- **Source Citations**: Clear attribution with clickable source links
-- **Follow-up Questions**: Intelligent context-aware suggestions
-- **Firebase Authentication**: Secure email/password login
-- **Local Chat Storage**: IndexedDB-based chat persistence
-- **Model Selection**: Gemini 3 (active) + GPT-5.2 (coming soon)
-- **Spotify Integration**: Create playlists from chat context
-- **Dark Mode**: Full theme support
-- **Mobile Responsive**: Works on all devices
+## 🚀 Live Demo
+[Check out Heliox here](https://heliox.devreondevs.com)
 
-## Project Structure
+---
 
-```
-/public
-  index.html      # Main HTML entry
-  styles.css      # All CSS styles
-/src
-  app.js          # Main application
-  auth.js         # Firebase authentication
-  chat.js         # Chat & Gemini API
-  models.js       # Model configuration
-  spotify.js      # Spotify integration
-  storage.js      # IndexedDB storage
-  security.js     # Input sanitization
-  firebase.js     # Firebase setup
-/server
-  worker.js       # Cloudflare Worker API
-  wrangler.toml   # Worker configuration
-/assets
-  logo.svg        # Brand logo
-/env
-  config.example.js  # Configuration template
-```
+## ✨ Key Features
 
-## Setup
+- **🔍 Grounded Search**: Real-time verification via Google Search for every answer.
+- **📚 Source Citations**: Interactive source cards with direct links and favicons.
+- **⚡ SSE Streaming**: Smooth, real-time typing effect (ChatGPT-style).
+- **🛡️ Secure Backend**: API keys are protected in a Cloudflare Worker proxy (never exposed).
+- **🎵 Spotify Integration**: Context-aware music playback directly inside the dashboard.
+- **🎨 Devreon Branding**: Premium executive interface with full Dark Mode support.
 
-### 1. Clone and Install
+---
 
+## 🛠️ Tech Stack
+
+- **Frontend**: Vanilla JS, CSS3, HTML5 (High performance, no bloat)
+- **Backend**: Cloudflare Workers (Serverless API Gateway)
+- **AI Model**: Google Gemini 2.0 Flash
+- **Auth**: Firebase Authentication
+- **Storage**: IndexedDB (Local chat history persistence)
+
+---
+
+## 🏗️ Getting Started (For Developers)
+
+### 1. Prerequisites
+- [Node.js](https://nodejs.org/) installed.
+- A [Cloudflare account](https://dash.cloudflare.com/) for the backend.
+- A [Gemini API Key](https://aistudio.google.com/).
+
+### 2. Local Setup
 ```bash
-git clone <repository>
-cd heliox
+# Clone the repository
+git clone https://github.com/uditraj286/Heliox.git
+cd Heliox
+
+# Install dependencies
 npm install
-```
 
-### 2. Configure Environment
-
-Copy the config template and add your keys:
-
-```javascript
-// In your HTML or as environment variables
-window.HELIOX_PROXY_ENDPOINT = 'https://your-worker.workers.dev';
-window.HELIOX_FIREBASE_API_KEY = 'your-firebase-key';
-// ... other Firebase config
-```
-
-### 3. Deploy Backend (Cloudflare Workers)
-
-```bash
-# Login to Cloudflare
-npx wrangler login
-
-# Add your Gemini API key as a secret
+# Start the local backend (Port 8787)
 cd server
-npx wrangler secret put HELIOX_GEMINI_API_KEY
+node local-server.cjs
 
-# Deploy
-npm run deploy:worker
+# Start the frontend (Port 3000)
+# (In a new terminal)
+npx http-server public -p 3000
 ```
 
-### 4. Deploy Frontend (Cloudflare Pages)
+### 3. Production Deployment
 
+#### Backend (Cloudflare Workers)
 ```bash
-# Via Cloudflare Dashboard:
-# 1. Create new Pages project
-# 2. Connect your repository
-# 3. Set build output directory: public
-# 4. Deploy
+cd server
+npx wrangler login
+npx wrangler secret put HELIOX_GEMINI_API_KEY # Paste your key when prompted
+npx wrangler deploy
 ```
 
-## Local Development
+#### Frontend (GitHub Pages / Cloudflare Pages)
+1. Point your hosting provider to the `public/` directory.
+2. Ensure your `BACKEND_URL` in `public/src/heliox-grounding-stream.js` points to your deployed worker.
 
-```bash
-# Start local frontend server (Terminal 1)
-npm run dev
+---
 
-# In another terminal, start the local backend server (Terminal 2)
-# This runs a lightweight Node.js server at http://localhost:8787
-npm run dev:worker
-```
+## 🤝 Contribution
+Developed by **Udit Raj** and the **Devreon Devs** team. We welcome contributions to make Heliox the standard for grounded AI assistants.
 
-## Security
-
-- **No API keys in frontend**: All keys stored in backend
-- **Input sanitization**: XSS protection on all inputs
-- **Rate limiting**: 30 requests/minute per IP
-- **CSP headers**: Content Security Policy enabled
-- **CORS**: Properly configured for security
-
-## API Endpoints
-
-### POST /chat
-
-Request:
-```json
-{
-  "message": "What is quantum computing?",
-  "model": "gemini-3",
-  "history": [],
-  "systemPrompt": "...",
-  "enableGrounding": true
-}
-```
-
-Response:
-```json
-{
-  "answer": "Structured editorial response...",
-  "sources": [
-    {
-      "title": "Source Title",
-      "url": "https://example.com",
-      "domain": "example.com"
-    }
-  ],
-  "followUps": [
-    "Related question 1",
-    "Related question 2"
-  ]
-}
-```
-
-## Branding
-
-- **Product**: Heliox
-- **Developer**: Devreon Devs
-- **Website**: https://devreondevs.com
-
-The AI never reveals underlying model names (Gemini, GPT, etc.) and presents itself as an independent product.
-
-## License
-
-MIT License - See LICENSE file for details.
+## 📄 License
+MIT License. Created with 🌌 for the Devreon Ecosystem.
