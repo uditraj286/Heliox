@@ -1,0 +1,26 @@
+name = "heliox-api"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+# Add your Gemini API key as a secret, not here
+# Use: wrangler secret put HELIOX_GEMINI_API_KEY
+
+# KV Namespace for rate limiting (create with: wrangler kv:namespace create "RATE_LIMITER")
+# Then paste the binding below
+
+# Development settings
+[env.development]
+name = "heliox-api-dev"
+
+# Production settings
+[env.production]
+name = "heliox-api"
+routes = [
+    { pattern = "api.heliox.devreondevs.com/*", zone_name = "devreondevs.com" }
+]
+
+# Uncomment after creating KV namespace:
+# [[env.production.kv_namespaces]]
+# binding = "RATE_LIMITER"
+# id = "YOUR_KV_NAMESPACE_ID"

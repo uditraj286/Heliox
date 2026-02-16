@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.wrangler/
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+config.js
+public/config.js
+*.secret
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+dist/
+build/
+.cache/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cloudflare
+.dev.vars

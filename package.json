@@ -1,0 +1,33 @@
+{
+  "name": "heliox",
+  "version": "1.0.0",
+  "description": "Heliox - AI Assistant with Grounded Search by Devreon Devs",
+  "main": "public/index.html",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve public -l 3000",
+    "dev:worker": "node server/local-server.cjs",
+    "deploy:worker": "cd server && wrangler deploy",
+    "deploy:worker:prod": "cd server && wrangler deploy --env production",
+    "build": "echo 'Static site - no build required'",
+    "lint": "echo 'Add ESLint configuration for production'"
+  },
+  "keywords": [
+    "ai",
+    "chatbot",
+    "heliox",
+    "gemini",
+    "grounded-search"
+  ],
+  "author": "Devreon Devs",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.114.17"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "optionalDependencies": {
+    "@cloudflare/workerd-windows-64": "^1.20260214.0"
+  }
+}
