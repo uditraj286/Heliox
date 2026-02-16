@@ -43,9 +43,6 @@ function toggleTheme() {
 function setupEventListeners() {
     // Theme toggle
     document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
-
-    // Download chat button
-    document.getElementById('download-chat-btn')?.addEventListener('click', downloadChat);
     
     // New chat button
     document.getElementById('new-chat-btn')?.addEventListener('click', startNewChat);
@@ -325,7 +322,6 @@ async function handleSendMessage(message) {
             timestamp: state.messages[0]?.timestamp || Date.now()
         });
         
-        
     } catch (error) {
         console.error('Chat error:', error);
         state.messages.push({
@@ -334,9 +330,10 @@ async function handleSendMessage(message) {
             isError: true,
             timestamp: Date.now()
         });
+    } finally {
         state.isLoading = false;
         hideTypingIndicator();
-        renderMessages(false);
+        renderMessages();
     }
 }
 
@@ -453,8 +450,6 @@ function showWelcomeView() {
     document.getElementById('chat-view')?.classList.add('hidden');
     document.getElementById('chat-title').textContent = 'New Chat';
 }
-
-
 
 function renderMessages() {
     const container = document.getElementById('messages-container');
@@ -630,95 +625,17 @@ function setupMessageActions() {
     document.querySelectorAll('.copy-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             navigator.clipboard.writeText(btn.dataset.content);
-            const originalIcon = btn.innerHTML;
-            btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+            btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>`;
             setTimeout(() => {
-                btn.innerHTML = originalIcon;
+                btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>`;
             }, 2000);
         });
     });
-
-    // Share button
-    document.querySelectorAll('.share-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-            const messageEl = btn.closest('.message');
-            const content = messageEl.querySelector('.message-content').textContent;
-            
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: 'Heliox Response',
-                        text: content
-                    });
-                } catch (err) {
-                    // Start copy fallback
-                    navigator.clipboard.writeText(content);
-                    const originalIcon = btn.innerHTML;
-                    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
-                    setTimeout(() => btn.innerHTML = originalIcon, 2000);
-                }
-            } else {
-                navigator.clipboard.writeText(content);
-                const originalIcon = btn.innerHTML;
-                btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
-                setTimeout(() => btn.innerHTML = originalIcon, 2000);
-            }
-        });
-    });
-
-    // Like button
-    document.querySelectorAll('.like-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            btn.classList.toggle('active');
-            btn.querySelector('svg').style.fill = btn.classList.contains('active') ? 'currentColor' : 'none';
-            // Remove dislike if active
-            const dislikeBtn = btn.closest('.feedback-btns').querySelector('.dislike-btn');
-            if (dislikeBtn.classList.contains('active')) {
-                dislikeBtn.classList.remove('active');
-                dislikeBtn.querySelector('svg').style.fill = 'none';
-            }
-        });
-    });
-
-    // Dislike button
-    document.querySelectorAll('.dislike-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            btn.classList.toggle('active');
-            btn.querySelector('svg').style.fill = btn.classList.contains('active') ? 'currentColor' : 'none';
-            // Remove like if active
-            const likeBtn = btn.closest('.feedback-btns').querySelector('.like-btn');
-            if (likeBtn.classList.contains('active')) {
-                likeBtn.classList.remove('active');
-                likeBtn.querySelector('svg').style.fill = 'none';
-            }
-        });
-    });
-}
-
-function downloadChat() {
-    if (state.messages.length === 0) {
-        alert('No chat history to download.');
-        return;
-    }
-    
-    let content = `Heliox Chat History - ${new Date().toLocaleString()}\n\n`;
-    state.messages.forEach(msg => {
-        const time = new Date(msg.timestamp).toLocaleTimeString();
-        content += `[${msg.role.toUpperCase()}] (${time})\n${msg.content}\n\n`;
-        if (msg.role === 'assistant' && msg.sources && msg.sources.length > 0) {
-            content += `Sources:\n${msg.sources.map(s => `- ${s.title} (${s.url})`).join('\n')}\n\n`;
-        }
-    });
-    
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `heliox-chat-${state.currentChatId || 'new'}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
 }
 
 function showTypingIndicator() {
