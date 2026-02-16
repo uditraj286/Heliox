@@ -1,6 +1,6 @@
 // ===== Heliox Firebase Authentication =====
 const firebaseConfig = {
-    apiKey: "",
+    apiKey: "AIzaSyCL5UmHfiSao6e3HdoZwVv-fUCOpe7fp58",
     authDomain: "login-96909.firebaseapp.com",
     projectId: "login-96909",
     storageBucket: "login-96909.appspot.com",
