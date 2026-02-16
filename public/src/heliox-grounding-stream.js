@@ -2293,7 +2293,7 @@ async function handleSpotifyCommand(query) {
                     (art ? '<img src="' + art + '" class="spotify-inline-art" alt="">' : '<div class="spotify-inline-art" style="background:rgba(255,255,255,0.08)"></div>') +
                     '<div class="spotify-inline-info"><span class="spotify-inline-name">' + escapeHTML(t.name) + '</span><span class="spotify-inline-artist">' + escapeHTML(t.artists?.map(a => a.name).join(', ') || '') + '</span></div>' +
                     '<span class="spotify-inline-duration">' + dur + '</span>' +
-                    (hasPreview ? '<button class="spotify-inline-play" onclick="playSpotifyTrack(' + i + ');event.stopPropagation();"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>' : '<span style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:4px;">Open in Spotify</span>') +
+                    '<button class="spotify-inline-play" onclick="playSpotifyTrack(' + i + ');event.stopPropagation();"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>' +
                     '</div>';
             }).join('') +
             '</div>' +
@@ -2331,7 +2331,7 @@ async function handleSpotifyPlaylist(theme) {
             '<div class="playlist-tracks">' +
             tracks.map((t, i) => {
             const hasPreview = !!t.preview_url;
-            return '<div class="playlist-track-item' + (hasPreview ? '' : ' no-preview') + '" onclick="playSpotifyTrack(' + i + ')"><span class="playlist-track-num">' + (i+1) + '</span><span style="flex:1">' + escapeHTML(t.name) + '</span><span style="color:rgba(255,255,255,0.3);font-size:0.75rem">' + escapeHTML(t.artists?.[0]?.name || '') + '</span>' + (hasPreview ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="#1DB954" style="flex-shrink:0"><polygon points="5 3 19 12 5 21 5 3"/></svg>' : '<span style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-left:4px;">Open in Spotify</span>') + '</div>';
+            return '<div class="playlist-track-item" onclick="playSpotifyTrack(' + i + ')"><span class="playlist-track-num">' + (i+1) + '</span><span style="flex:1">' + escapeHTML(t.name) + '</span><span style="color:rgba(255,255,255,0.3);font-size:0.75rem">' + escapeHTML(t.artists?.[0]?.name || '') + '</span><svg width="12" height="12" viewBox="0 0 24 24" fill="#1DB954" style="flex-shrink:0"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>';
             }).join('') +
             '</div></div>' +
             '<div class="spotify-mini-bar hidden" id="spotify-mini-bar"><img class="spotify-mini-art" id="mini-art" src="" alt=""><div class="spotify-mini-info"><span class="spotify-mini-title" id="mini-title"></span><span class="spotify-mini-artist" id="mini-artist"></span></div><div class="spotify-mini-controls"><button class="spotify-mini-btn" onclick="spotifyPrev()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4"/></svg></button><button class="spotify-mini-btn play-btn" id="mini-play-btn" onclick="spotifyTogglePlay()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button><button class="spotify-mini-btn" onclick="spotifyNext()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20"/></svg></button></div></div>' +
@@ -2355,12 +2355,11 @@ function renderLocalPlaylistMessage(playlist) {
         '<span style="font-size:0.75rem;color:rgba(255,255,255,0.4)">' + tracks.length + ' tracks</span></div>' +
         '<div class="playlist-tracks">' +
         tracks.map((t, i) => {
-            const hasPreview = !!t.preview_url;
-            return '<div class="playlist-track-item' + (hasPreview ? '' : ' no-preview') + '" onclick="playSpotifyTrack(' + i + ')">' +
+            return '<div class="playlist-track-item" onclick="playSpotifyTrack(' + i + ')">' +
                 '<span class="playlist-track-num">' + (i + 1) + '</span>' +
                 '<span style="flex:1">' + escapeHTML(t.name) + '</span>' +
                 '<span style="color:rgba(255,255,255,0.3);font-size:0.75rem">' + escapeHTML(t.artists?.[0]?.name || '') + '</span>' +
-                (hasPreview ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="#1DB954" style="flex-shrink:0"><polygon points="5 3 19 12 5 21 5 3"/></svg>' : '<span style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-left:4px;">Open in Spotify</span>') +
+                '<svg width="12" height="12" viewBox="0 0 24 24" fill="#1DB954" style="flex-shrink:0"><polygon points="5 3 19 12 5 21 5 3"/></svg>' +
             '</div>';
         }).join('') +
         '</div></div>' +
