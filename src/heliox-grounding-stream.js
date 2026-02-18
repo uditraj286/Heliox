@@ -9,8 +9,8 @@
 
 // Backend API Setup - Change to your worker URL when deploying
 // For streaming, we use /chat/stream; for non-streaming fallback, /chat
-const BACKEND_STREAM_URL = 'https://heliox-api.uditraj286.workers.dev/chat/stream';
-const BACKEND_CHAT_URL = 'https://heliox-api.uditraj286.workers.dev/chat';
+const BACKEND_STREAM_URL = 'http://localhost:8787/chat/stream';
+const BACKEND_CHAT_URL = 'http://localhost:8787/chat';
 console.log('Backend pointing to:', BACKEND_STREAM_URL);
 const CONFIG = {
     // apiKey removed - using backend proxy
