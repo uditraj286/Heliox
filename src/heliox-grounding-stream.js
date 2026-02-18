@@ -710,7 +710,7 @@ function parseMarkdown(text) {
                     <div class="canvas-tab">
                         <span class="canvas-filename">${fileName}</span>
                         <span class="canvas-lang-badge">${langLabel.toUpperCase()}</span>
-                    </div>
+                    </div>\
                     <span class="canvas-line-info">${lineCount} line${lineCount !== 1 ? 's' : ''}</span>
                 </div>
                 <div class="canvas-header-right">
@@ -817,7 +817,7 @@ window.downloadCodeBlock = function(codeId, lang) {
     const codeEl = document.getElementById(codeId);
     const text = rawEl ? (rawEl.textContent || rawEl.innerText) : (codeEl ? codeEl.innerText : '');
     if (!text) return;
-    const extMap = { python: 'py', javascript: 'js', typescript: 'ts', java: 'java', cpp: 'cpp', c: 'c', html: 'html', css: 'css', go: 'go', rust: 'rs', ruby: 'rb', php: 'php', swift: 'swift', kotlin: 'kt', sql: 'sql', bash: 'sh', shell: 'sh', json: 'json', xml: 'xml', yaml: 'yml', csharp: 'cs', r: 'r', darth: 'dart', lua: 'lua', perl: 'pl', scala: 'scala', jsx: 'jsx', tsx: 'tsx', markdown: 'md' };
+    const extMap = { python: 'py', javascript: 'js', typescript: 'ts', java: 'java', cpp: 'cpp', c: 'c', html: 'html', css: 'css', go: 'go', rust: 'rs', ruby: 'rb', php: 'php', swift: 'swift', kotlin: 'kt', sql: 'sql', bash: 'sh', shell: 'sh', json: 'json', xml: 'xml', yaml: 'yml', csharp: 'cs', r: 'r', dart: 'dart', lua: 'lua', perl: 'pl', scala: 'scala', jsx: 'jsx', tsx: 'tsx', markdown: 'md' };
     const ext = extMap[lang?.toLowerCase()] || 'txt';
     const blob = new Blob([text], { type: 'text/plain' });
     const a = document.createElement('a');
@@ -954,7 +954,7 @@ function handleSend(inputEl) {
     inputEl.style.height = 'auto';
     
     // Check for @spotify command
-    const spotifyMatch = text.match(/^@spotify\s+(.+)/i);
+    const spotifyMatch = text.match(/^@spotify\\s+(.+)/i);
     if (spotifyMatch) {
         handleSpotifyCommand(spotifyMatch[1].trim());
         return;
@@ -971,14 +971,14 @@ function setupEventListeners() {
         const updateIcons = () => {
             const isCollapsed = sidebar.classList.contains('collapsed');
             sidebarToggle.innerHTML = isCollapsed
-                ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                ? `<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
+                        <line x1=\"3\" y1=\"6\" x2=\"21\" y2=\"6\"></line>
+                        <line x1=\"3\" y1=\"12\" x2=\"21\" y2=\"12\"></line>\
+                        <line x1=\"3\" y1=\"18\" x2=\"21\" y2=\"18\"></line>
                    </svg>`
-                : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                : `<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">
+                        <line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"></line>
+                        <line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"></line>
                    </svg>`;
 
             // Show the floating close icon only when sidebar is open (and on small screens)
