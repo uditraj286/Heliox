@@ -1,12 +1,11 @@
-// ===== Heliox Firebase Authentication =====
 const firebaseConfig = {
-    apiKey: "AIzaSyCL5UmHfiSao6e3HdoZwVv-fUCOpe7fp58",
-    authDomain: "login-96909.firebaseapp.com",
-    projectId: "login-96909",
-    storageBucket: "login-96909.appspot.com",
-    messagingSenderId: "1041589784359",
-    appId: "1:1041589784359:web:a213e9d92307d5b831a302"
-};
+            apiKey: "AIzaSyCL5UmHfiSao6e3HdoZwVv-fUCOpe7fp58",
+            authDomain: "login-96909.firebaseapp.com",
+            projectId: "login-96909",
+            storageBucket: "login-96909.appspot.com",
+            messagingSenderId: "1041589784359",
+            appId: "1:1041589784359:web:a213e9d92307d5b831a302"
+        };
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
