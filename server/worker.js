@@ -26,7 +26,7 @@ const ALLOWED_ORIGINS = [
     'http://127.0.0.1:8080',
 ];
 
-const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_MODEL = 'gemini-1.5-flash';
 const GEMINI_API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
 const RATE_LIMIT_MAX = 60;         // requests per window
 const RATE_LIMIT_WINDOW = 60;      // window in seconds
