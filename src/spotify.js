@@ -2,7 +2,7 @@
  * Heliox - Spotify Integration
  * Playlist creation from chat context
  */
-import { getConfig } from '../env/config.example.js';
+import { SPOTIFY_CONFIG } from '../config.js';
 
 let spotifyAccessToken = null;
 let spotifyRefreshToken = null;
@@ -11,16 +11,19 @@ const SPOTIFY_AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
 const SPOTIFY_TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
 const SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
 
+// Production Redirect URI
+const REDIRECT_URI = window.location.origin + window.location.pathname;
+const PROXY_ENDPOINT = 'https://heliox-api.uditraj286.workers.dev';
+
 export function getSpotifyAuthUrl() {
-    const config = getConfig();
-    if (!config.spotify.clientId) {
+    if (!SPOTIFY_CONFIG.CLIENT_ID) {
         console.warn('Spotify not configured');
         return null;
     }
     const params = new URLSearchParams({
-        client_id: config.spotify.clientId,
+        client_id: SPOTIFY_CONFIG.CLIENT_ID,
         response_type: 'code',
-        redirect_uri: config.spotify.redirectUri,
+        redirect_uri: REDIRECT_URI,
         scope: 'playlist-modify-public playlist-modify-private user-read-private',
         state: crypto.randomUUID()
     });
@@ -28,12 +31,11 @@ export function getSpotifyAuthUrl() {
 }
 
 export async function handleSpotifyCallback(code) {
-    const config = getConfig();
     try {
-        const response = await fetch(config.proxyEndpoint + '/spotify/token', {
+        const response = await fetch(PROXY_ENDPOINT + '/spotify/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code, redirectUri: config.spotify.redirectUri })
+            body: JSON.stringify({ code, redirectUri: REDIRECT_URI })
         });
         if (!response.ok) throw new Error('Token exchange failed');
         const data = await response.json();
