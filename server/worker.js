@@ -16,6 +16,7 @@
 
 // ===== CONFIGURATION =====
 const ALLOWED_ORIGINS = [
+    'https://uditraj286.github.io',
     'https://heliox.devreondevs.com',
     'https://www.heliox.devreondevs.com',
     'https://devreondevs.com',
